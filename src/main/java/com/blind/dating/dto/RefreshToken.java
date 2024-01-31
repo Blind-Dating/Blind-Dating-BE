@@ -1,10 +1,7 @@
 package com.blind.dating.dto;
 
+import jakarta.persistence.Id;
 import lombok.Getter;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
-
-import javax.persistence.Id;
 
 @Getter
 public class RefreshToken {

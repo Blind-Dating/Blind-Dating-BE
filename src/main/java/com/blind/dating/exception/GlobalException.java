@@ -25,6 +25,7 @@ public class GlobalException {
 
         return ResponseEntity.<Api>badRequest()
                 .body(Api.builder()
+                        .code(400)
                         .status("Bad request")
                         .message(e.getMessage())
                         .build());
@@ -38,7 +39,8 @@ public class GlobalException {
         for (FieldError fieldError : bindingResult.getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return ResponseEntity.badRequest().body(Api.builder()
+        return ResponseEntity.status(400).body(Api.builder()
+                        .code(400)
                 .status("BAD REQUEST")
                 .message("회원가입에 실패했습니다.")
                 .data(errors)

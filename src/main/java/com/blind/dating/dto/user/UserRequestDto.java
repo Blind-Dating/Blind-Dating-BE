@@ -2,11 +2,11 @@ package com.blind.dating.dto.user;
 
 import com.blind.dating.domain.Role;
 import com.blind.dating.domain.UserAccount;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.List;
 

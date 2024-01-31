@@ -15,7 +15,7 @@ public class ChatRoomDto {
     private Long roomId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;
-    private Long otherUserid;
+    private Long otherUserId;
     private String otherUserNickname;
     private String recentMessage;
     private Long unReadCount;
@@ -23,7 +23,7 @@ public class ChatRoomDto {
     public ChatRoomDto(Long roomId, LocalDateTime updatedAt, Long otherUserid, String otherUserNickname, String recentMessage, Long unReadCount) {
         this.roomId = roomId;
         this.updatedAt = updatedAt;
-        this.otherUserid = otherUserid;
+        this.otherUserId = otherUserid;
         this.otherUserNickname = otherUserNickname;
         this.recentMessage = recentMessage;
         this.unReadCount = unReadCount;

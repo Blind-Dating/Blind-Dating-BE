@@ -9,8 +9,6 @@ import com.blind.dating.service.ChatService;
 import com.blind.dating.service.ChattingRoomService;
 import com.blind.dating.service.ReadChatService;
 import com.blind.dating.service.RedisPublisher;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Tag(name = "Stomp Info", description = "STOMP 관련 서비스")
 @Controller
 @RequiredArgsConstructor
 public class StompChatController {
@@ -39,7 +36,6 @@ public class StompChatController {
     //"/pub/chat/enter"
     // roomId, userId, message,
     @MessageMapping(value = "/chat/message")
-    @Operation(summary = "메세지를 전송", description = "채팅방에 접속중인 유저에게 메세지를 전송합니다.")
     public void message(ChatRequestDto message){
 
         Chat chat = chatService.saveChat(message);
@@ -68,7 +64,6 @@ public class StompChatController {
     }
 
     @MessageMapping(value = "/chat/disconnect")
-    @Operation(summary = "채팅방 나가기", description = "채팅방 나갈시 다른 유저에게 메세지를 전송합니다.")
     public void leave(ChatRequestDto message){
         message.setMessage("상대방이 채팅방을 나가셨습니다.");
         Chat chat = chatService.saveChat(message);

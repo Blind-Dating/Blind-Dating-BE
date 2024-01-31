@@ -23,6 +23,6 @@ public class ChatRoomDto1 {
     }
 
     public static ChatRoomDto1 from(ChatRoomDto dto){
-        return new ChatRoomDto1(dto.getRoomId(), dto.getOtherUserid(),dto.getOtherUserNickname(), dto.getRecentMessage());
+        return new ChatRoomDto1(dto.getRoomId(), dto.getOtherUserId(),dto.getOtherUserNickname(), dto.getRecentMessage());
     }
 }

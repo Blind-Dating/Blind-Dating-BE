@@ -2,20 +2,12 @@ server:
   port: 8081
 
 spring:
-  redis:
-    host:  ${REDIS-HOST}
-    port: 6379
   # 테스트 환경에서의 db
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${DB-URL}
     username: ${USERNAME}
     password: ${PASSWORD}
-
-
-  h2:
-    console:
-      enabled: true
 
   jpa:
     hibernate.ddl-auto: update
@@ -25,6 +17,10 @@ spring:
       hibernate.default_batch_fetch_size: 20
       hibernate.format_sql: true
     #sql.init.mode: always # data.sql을 언제 만들것인가를
+  data:
+    redis:
+      host: ${REDIS-HOST}
+      port: 6379
 
 logging:
   level:
@@ -32,20 +28,26 @@ logging:
     org.springframework.web.servlet : debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace #sql문 ?에 무엇이 들어가는지 알려준다.
 
+#springdoc:
+#  packages-to-scan: com.blind.dating
+#  default-consumes-media-type: application/json;charset=UTF-8
+#  default-produces-media-type: application/json;charset=UTF-8
+#  swagger-ui:
+#    #path: demo-ui.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
+#    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+#    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
+#  api-docs:
+#    #path: /api-docs/json
+#    groups:
+#      enabled: true
+#  cache:
+#    disabled: true
 springdoc:
-  packages-to-scan: com.blind.dating
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    #path: demo-ui.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
-    tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
-    operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
-  api-docs:
-    #path: /api-docs/json
-    groups:
-      enabled: true
-  cache:
-    disabled: true
+    url: /docs/open-api-3.0.1.json
+    path: /docs/swagger
 
 jwt:
   secret_key: ${secret-key}

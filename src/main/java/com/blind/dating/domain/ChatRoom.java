@@ -1,10 +1,7 @@
 package com.blind.dating.domain;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;

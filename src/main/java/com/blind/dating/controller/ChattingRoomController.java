@@ -10,14 +10,6 @@ import com.blind.dating.common.Api;
 import com.blind.dating.service.ChatService;
 import com.blind.dating.service.ChattingRoomService;
 import com.blind.dating.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -29,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Tag(name = "Chatting Room Info", description = "채팅방 관련 서비스")
-@SecurityRequirement(name = "Bearer Authentication")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -41,13 +31,6 @@ public class ChattingRoomController {
     private final UserService userService;
 
     @GetMapping("/chatroom")
-    @Operation(summary = "채팅방 전체 조회", description = "내가 들어간 채팅방을 조회합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST",content = @Content(schema = @Schema(implementation = Api.class))),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(schema = @Schema(implementation = Api.class))),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = Api.class)))
-    })
     public ResponseEntity<Api<List<ChatRoomDto>>> getMyMessageList(
             Authentication authentication
     ){
@@ -60,14 +43,6 @@ public class ChattingRoomController {
     }
 
     @GetMapping("/chatroom/{roomId}")
-    @Operation(summary = "채팅내용 조회", description = "채팅방 입장시 채팅 내역 조회합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "BAD REQUEST",content = @Content(schema = @Schema(implementation = Api.class))),
-            @ApiResponse(responseCode = "404", description = "NOT FOUND", content = @Content(schema = @Schema(implementation = Api.class))),
-            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR", content = @Content(schema = @Schema(implementation = Api.class)))
-    })
-    @Parameter(name = "roomId", description = "채팅방 번호")
     public ResponseEntity<Api<ChatListWithOtherUserInfo>> enterRoom(
             @PathVariable String roomId,
             @RequestParam String chatId,
@@ -82,8 +57,7 @@ public class ChattingRoomController {
         //다른 유저 정보 조회하기.
         UserAccount otherUser = chatRoom.getUsers().stream().filter(
                it -> it.getId() != userId
-        ).collect(Collectors.toList())
-                .get(0);
+        ).toList().get(0);
 
         //존재할경우 채팅 메세지 30개를 id 오름차순으로 가져오기
         List<ChatDto> chatList = chatService.selectChatList(chatRoom, chatId)

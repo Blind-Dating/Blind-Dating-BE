@@ -8,6 +8,7 @@ import com.blind.dating.dto.user.UserInfoWithTokens;
 import com.blind.dating.repository.RefreshTokenRepository;
 import com.blind.dating.repository.UserAccountRepository;
 import com.blind.dating.security.TokenProvider;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import javax.servlet.http.Cookie;
 
 import java.util.List;
 import java.util.Optional;

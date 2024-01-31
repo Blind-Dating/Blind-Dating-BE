@@ -8,14 +8,12 @@ import com.blind.dating.dto.user.UserInfoWithTokens;
 import com.blind.dating.repository.RefreshTokenRepository;
 import com.blind.dating.repository.UserAccountRepository;
 import com.blind.dating.security.TokenProvider;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

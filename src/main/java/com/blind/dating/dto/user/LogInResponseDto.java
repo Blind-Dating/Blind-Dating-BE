@@ -4,6 +4,7 @@ import com.blind.dating.domain.Interest;
 import com.blind.dating.domain.UserAccount;
 import com.blind.dating.dto.interest.InterestDto;
 import com.blind.dating.dto.question.QuestionDto;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

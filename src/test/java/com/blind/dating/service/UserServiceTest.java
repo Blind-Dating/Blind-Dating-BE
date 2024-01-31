@@ -28,9 +28,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 
 @DisplayName("UserService 테스트")
@@ -82,7 +85,7 @@ public class UserServiceTest {
 
     }
 
-    @DisplayName("남성 추천 리스트 - 테스트")
+    @DisplayName("여성 추천 리스트 - 테스트")
     @Test
     @WithMockUser(username = "1")
     void givenRequireData_whenSelectManList_thenReturnUserList(){
@@ -102,6 +105,22 @@ public class UserServiceTest {
         //Then
         assertThat(result).isNotNull();
         assertThat(result.getTotalPages()).isEqualTo(1);
+
+    }
+
+    @DisplayName("이성 추천 리스트중 예외 - 테스트")
+    @Test
+    @WithMockUser(username = "1")
+    void givenRequireData_whenSelectManList_thenThrowException(){
+        //Given
+        given(userAccountRepository.findById(anyLong())).willReturn(Optional.empty());
+        //When
+        RuntimeException exception = assertThrows(RuntimeException.class, ()-> {
+            userService.getUserList(authentication, Pageable.ofSize(2));
+        });
+
+        //Then
+        assertEquals(exception.getMessage(),"예외 발생");
 
     }
 

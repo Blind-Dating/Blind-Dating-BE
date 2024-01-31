@@ -1,64 +1,79 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "Blind-Dating API 문서",
-    "description" : "블라인드 데이팅 웹사이트 API 문서입니다.",
+    "title" : "Blind Dating REST API",
+    "description" : "블라인드 데이팅 API 명세서입니다.",
     "version" : "0.0.1"
   },
   "servers" : [ {
     "url" : "http://localhost:8081"
+  }, {
+    "url" : "https://blind-dating.site"
   } ],
   "tags" : [ ],
   "paths" : {
+    "/api/chatroom" : {
+      "get" : {
+        "tags" : [ "Chatting Room Info" ],
+        "summary" : "채팅방 리스트 조회",
+        "description" : "채팅방 리스트 조회",
+        "operationId" : "채팅방 리스트 조회 - 성공",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/채팅방 리스트 응답"
+                },
+                "examples" : {
+                  "채팅방 리스트 조회 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"채팅방 리스트가 성공적으로 조회되었습니다.\",\r\n  \"data\" : [ {\r\n    \"roomId\" : 1,\r\n    \"updatedAt\" : \"2024-01-31 16:10:04\",\r\n    \"otherUserId\" : 2,\r\n    \"otherUserNickname\" : \"nick02\",\r\n    \"recentMessage\" : \"안녕 이게 최근 메시지야\",\r\n    \"unReadCount\" : 10\r\n  } ]\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/check-nickname" : {
       "post" : {
         "tags" : [ "UserAccount" ],
-        "summary" : "닉네임 중복 체크",
-        "description" : "닉네임 중복 체크",
-        "operationId" : "check-nickname/",
+        "summary" : "닉네임 중복체크 API",
+        "description" : "닉네임 중복체크 API",
+        "operationId" : "닉네임 중복체크 - ",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/CheckNicknameRequest"
+                "$ref" : "#/components/schemas/닉네임 중복체크 요청"
               },
               "examples" : {
-                "check-nickname/fail" : {
-                  "value" : "{\r\n  \"nickname\" : \"nick\"\r\n}"
+                "닉네임 중복체크 - 없는 닉네임" : {
+                  "value" : "{\r\n  \"nickname\" : \"nickname\"\r\n}"
                 },
-                "check-nickname/success" : {
-                  "value" : "{\r\n  \"nickname\" : \"nick\"\r\n}"
+                "닉네임 중복체크 - 있는 닉네임" : {
+                  "value" : "{\r\n  \"nickname\" : \"nickname\"\r\n}"
                 }
               }
             }
           }
         },
         "responses" : {
-          "400" : {
-            "description" : "400",
-            "content" : {
-              "application/json;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CheckNicknameResponse"
-                },
-                "examples" : {
-                  "check-nickname/fail" : {
-                    "value" : "{\r\n  \"status\" : \"BAD REQUEST\",\r\n  \"message\" : \"이미 사용중인 닉네임입니다. 다른 닉네임를 선택해주세요.\",\r\n  \"data\" : false\r\n}"
-                  }
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "200",
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CheckNicknameResponse"
+                  "$ref" : "#/components/schemas/닉네임 중복체크 응답"
                 },
                 "examples" : {
-                  "check-nickname/success" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"사용 가능한 닉네임입니다.\",\r\n  \"data\" : true\r\n}"
+                  "닉네임 중복체크 - 없는 닉네임" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"true\",\r\n  \"message\" : \"사용가능한 닉네임입니다.\",\r\n  \"data\" : \"true\"\r\n}"
+                  },
+                  "닉네임 중복체크 - 있는 닉네임" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"false\",\r\n  \"message\" : \"닉네임이 존재합니다.\",\r\n  \"data\" : \"false\"\r\n}"
                   }
                 }
               }
@@ -70,20 +85,20 @@
     "/api/check-userId" : {
       "post" : {
         "tags" : [ "UserAccount" ],
-        "summary" : "아이디 중복 체크",
-        "description" : "아이디 중복 체크",
-        "operationId" : "check-user-id/",
+        "summary" : "인증 관련 API",
+        "description" : "인증 관련 API",
+        "operationId" : "아이디 중복체크 - ",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/CheckUserIdRequest"
+                "$ref" : "#/components/schemas/아이디 중복체크 요청"
               },
               "examples" : {
-                "check-user-id/fail" : {
+                "아이디 중복체크 - 없는 아이디" : {
                   "value" : "{\r\n  \"userId\" : \"userId\"\r\n}"
                 },
-                "check-user-id/success" : {
+                "아이디 중복체크 - 있는 아이디" : {
                   "value" : "{\r\n  \"userId\" : \"userId\"\r\n}"
                 }
               }
@@ -91,31 +106,64 @@
           }
         },
         "responses" : {
-          "400" : {
-            "description" : "400",
-            "content" : {
-              "application/json;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/CheckUserIdResponse"
-                },
-                "examples" : {
-                  "check-user-id/fail" : {
-                    "value" : "{\r\n  \"status\" : \"BAD REQUEST\",\r\n  \"message\" : \"이미 사용중인 아이디입니다. 다른 아이디를 선택해주세요.\",\r\n  \"data\" : false\r\n}"
-                  }
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "200",
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/CheckUserIdResponse"
+                  "$ref" : "#/components/schemas/중복아이디 체크 응답"
                 },
                 "examples" : {
-                  "check-user-id/success" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"사용 가능한 아이디입니다.\",\r\n  \"data\" : true\r\n}"
+                  "아이디 중복체크 - 없는 아이디" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"true\",\r\n  \"message\" : \"사용가능한 아이디입니다.\",\r\n  \"data\" : \"true\"\r\n}"
+                  },
+                  "아이디 중복체크 - 있는 아이디" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"false\",\r\n  \"message\" : \"아이디가 존재합니다.\",\r\n  \"data\" : \"false\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/like" : {
+      "post" : {
+        "tags" : [ "Like_Unlike" ],
+        "summary" : "유저 좋아요",
+        "description" : "유저 좋아요",
+        "operationId" : "좋아요 - ",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/유저 좋아요 요청"
+              },
+              "examples" : {
+                "좋아요 - 성공" : {
+                  "value" : "{\r\n  \"receiverId\" : \"1\"\r\n}"
+                },
+                "좋아요 - 실패" : {
+                  "value" : "{\r\n  \"receiverId\" : \"1\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/유저 좋아요 응답"
+                },
+                "examples" : {
+                  "좋아요 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"좋아요에 성공했습니다.\",\r\n  \"data\" : false\r\n}"
+                  },
+                  "좋아요 - 실패" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"좋아요에 성공했습니다.\",\r\n  \"data\" : false\r\n}"
                   }
                 }
               }
@@ -127,20 +175,20 @@
     "/api/login" : {
       "post" : {
         "tags" : [ "UserAccount" ],
-        "summary" : "로그인",
-        "description" : "로그인",
-        "operationId" : "login/",
+        "summary" : "로그인 API",
+        "description" : "로그인 API",
+        "operationId" : "로그인 ",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/loginRequest"
+                "$ref" : "#/components/schemas/로그인 요청"
               },
               "examples" : {
-                "login/fail" : {
+                "로그인 성공" : {
                   "value" : "{\r\n  \"userId\" : \"userId\",\r\n  \"userPassword\" : \"userPwd\"\r\n}"
                 },
-                "login/success" : {
+                "로그인 실패" : {
                   "value" : "{\r\n  \"userId\" : \"userId\",\r\n  \"userPassword\" : \"userPwd\"\r\n}"
                 }
               }
@@ -148,31 +196,56 @@
           }
         },
         "responses" : {
-          "400" : {
-            "description" : "400",
-            "content" : {
-              "application/json;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/loginResponse"
-                },
-                "examples" : {
-                  "login/fail" : {
-                    "value" : "{\r\n  \"status\" : \"Bad request\",\r\n  \"message\" : \"아이디가 존재하지 않습니다.\",\r\n  \"data\" : null\r\n}"
-                  }
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "200",
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/loginResponse"
+                  "$ref" : "#/components/schemas/로그인 성공 응답"
                 },
                 "examples" : {
-                  "login/success" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"로그인이 성공적으로 처리되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : 1,\r\n    \"userId\" : \"userId01\",\r\n    \"nickname\" : \"userNickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INFP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거타기\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"interestName\" : \"독서하기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : true\r\n    }, {\r\n      \"id\" : 2,\r\n      \"status\" : false\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕하세요\",\r\n    \"accessToken\" : \"accessToken\"\r\n  }\r\n}"
+                  "로그인 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"로그인이 성공적으로 진행되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : null,\r\n    \"userId\" : \"user01\",\r\n    \"nickname\" : \"userNickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INFP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"interestName\" : \"놀기\"\r\n    }, {\r\n      \"id\" : 3,\r\n      \"interestName\" : \"게임하기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : true\r\n    }, {\r\n      \"id\" : 2,\r\n      \"status\" : false\r\n    }, {\r\n      \"id\" : 3,\r\n      \"status\" : true\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕하세요\",\r\n    \"accessToken\" : \"accessToken\"\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/로그인 실패 응답"
+                },
+                "examples" : {
+                  "로그인 실패" : {
+                    "value" : "{\r\n  \"code\" : 400,\r\n  \"status\" : \"Bad request\",\r\n  \"message\" : \"Not Found UserInfo\",\r\n  \"data\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/logout" : {
+      "post" : {
+        "tags" : [ "UserAccount" ],
+        "summary" : "로그아웃 API",
+        "description" : "로그아웃 API",
+        "operationId" : "로그아웃",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/로그아웃 응답"
+                },
+                "examples" : {
+                  "로그아웃" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"로그아웃이 성공적으로 진행되었습니다.\",\r\n  \"data\" : null\r\n}"
                   }
                 }
               }
@@ -183,36 +256,36 @@
     },
     "/api/refresh" : {
       "get" : {
-        "tags" : [ "Token" ],
-        "summary" : "리프레쉬 토큰 재발급",
-        "description" : "리프레쉬 토큰 재발급",
-        "operationId" : "reissue-refresh-token/given-refresh-token_when-regenerate-refresh-token_then-return-",
+        "tags" : [ "Tokens" ],
+        "summary" : "토큰 재발급",
+        "description" : "토큰 재발급",
+        "operationId" : "토큰 재발급 - ",
         "responses" : {
-          "400" : {
-            "description" : "400",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/api-refresh996116999"
-                },
-                "examples" : {
-                  "reissue-refresh-token/given-refresh-token_when-regenerate-refresh-token_then-return-bad-request" : {
-                    "value" : "{\r\n  \"status\" : \"Bad Request\",\r\n  \"message\" : \"토큰 정보가 일치하지 않습니다.\",\r\n  \"data\" : null\r\n}"
-                  }
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "200",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/api-refresh86057858"
+                  "$ref" : "#/components/schemas/토큰 재발급 성공"
                 },
                 "examples" : {
-                  "reissue-refresh-token/given-refresh-token_when-regenerate-refresh-token_then-return-refresh-token" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"accessToken 이 성공적으로 생성되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : null,\r\n    \"userId\" : \"userId01\",\r\n    \"nickname\" : \"userNickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INFP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : false\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕하세요\",\r\n    \"accessToken\" : null\r\n  }\r\n}"
+                  "토큰 재발급 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"accessToken이 성공적으로 생성되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : 1,\r\n    \"userId\" : \"userId\",\r\n    \"nickname\" : \"nickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INTP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"interestName\" : \"놀기\"\r\n    }, {\r\n      \"id\" : 3,\r\n      \"interestName\" : \"게임하기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : true\r\n    }, {\r\n      \"id\" : 2,\r\n      \"status\" : false\r\n    }, {\r\n      \"id\" : 3,\r\n      \"status\" : true\r\n    } ],\r\n    \"selfIntroduction\" : \"하이요\",\r\n    \"accessToken\" : \"accessToken\"\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/토큰 재발급 실패"
+                },
+                "examples" : {
+                  "토큰 재발급 - 실패" : {
+                    "value" : "{\r\n  \"code\" : 400,\r\n  \"status\" : \"Bad request\",\r\n  \"message\" : \"1에 해당하는 유저는 존재하지 않습니다.\",\r\n  \"data\" : null\r\n}"
                   }
                 }
               }
@@ -224,21 +297,21 @@
     "/api/signup" : {
       "post" : {
         "tags" : [ "UserAccount" ],
-        "summary" : "회원 가입",
-        "description" : "회원 가입",
-        "operationId" : "register/",
+        "summary" : "인증 관련 API",
+        "description" : "인증 관련 API",
+        "operationId" : "userId로인한 예외발생회원가입-성공",
         "requestBody" : {
           "content" : {
             "application/json;charset=UTF-8" : {
               "schema" : {
-                "$ref" : "#/components/schemas/signUpRequest"
+                "$ref" : "#/components/schemas/회원가입 요청"
               },
               "examples" : {
-                "register/fail" : {
-                  "value" : "{\r\n  \"userId\" : null,\r\n  \"userPassword\" : \"userPassword01\",\r\n  \"nickname\" : \"userNickname\",\r\n  \"region\" : \"서울\",\r\n  \"mbti\" : \"INFP\",\r\n  \"gender\" : \"M\",\r\n  \"interests\" : [ \"자전거타기\", \"놀기\", \"게임하기\" ],\r\n  \"questions\" : [ true, false, true ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
+                "userId로인한 예외발생" : {
+                  "value" : "{\r\n  \"userId\" : \"use\",\r\n  \"userPassword\" : \"userPass01\",\r\n  \"nickname\" : \"userNickname\",\r\n  \"region\" : \"서울\",\r\n  \"mbti\" : \"INFP\",\r\n  \"gender\" : \"M\",\r\n  \"interests\" : [ \"자전거타기\", \"놀기\", \"게임하기\" ],\r\n  \"questions\" : [ true, false, true ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
                 },
-                "register/success" : {
-                  "value" : "{\r\n  \"userId\" : \"userId01\",\r\n  \"userPassword\" : \"userPassword01\",\r\n  \"nickname\" : \"userNickname\",\r\n  \"region\" : \"서울\",\r\n  \"mbti\" : \"INFP\",\r\n  \"gender\" : \"M\",\r\n  \"interests\" : [ \"자전거타기\", \"놀기\", \"게임하기\" ],\r\n  \"questions\" : [ true, false, true ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
+                "회원가입-성공" : {
+                  "value" : "{\r\n  \"userId\" : \"user01\",\r\n  \"userPassword\" : \"userPass01\",\r\n  \"nickname\" : \"userNickname\",\r\n  \"region\" : \"서울\",\r\n  \"mbti\" : \"INFP\",\r\n  \"gender\" : \"M\",\r\n  \"interests\" : [ \"자전거타기\", \"놀기\", \"게임하기\" ],\r\n  \"questions\" : [ true, false, true ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
                 }
               }
             }
@@ -250,11 +323,11 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
+                  "$ref" : "#/components/schemas/회원가입 실패 응답"
                 },
                 "examples" : {
-                  "register/fail" : {
-                    "value" : "{\r\n  \"status\" : \"BAD REQUEST\",\r\n  \"message\" : \"회원가입에 실패했습니다.\",\r\n  \"data\" : { }\r\n}"
+                  "userId로인한 예외발생" : {
+                    "value" : "{\r\n  \"code\" : 400,\r\n  \"status\" : \"BAD REQUEST\",\r\n  \"message\" : \"회원가입에 실패했습니다.\",\r\n  \"data\" : {\r\n    \"userId\" : \"아이디는 문자, 숫자, 한글만 가능하며, 길이는 5~20사이만 가능합니다.\"\r\n  }\r\n}"
                   }
                 }
               }
@@ -265,11 +338,11 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
+                  "$ref" : "#/components/schemas/회원가입 성공 응답"
                 },
                 "examples" : {
-                  "register/success" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"회원가입이 성공적으로 완료되었습니다.\",\r\n  \"data\" : null\r\n}"
+                  "회원가입-성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"회원가입이 성공적으로 진행되었습니다.\",\r\n  \"data\" : null\r\n}"
                   }
                 }
               }
@@ -278,62 +351,24 @@
         }
       }
     },
-    "/api/user" : {
-      "get" : {
-        "tags" : [ "User" ],
-        "summary" : "내정보 조회",
-        "description" : "내정보 조회",
-        "operationId" : "get-my-info/given-user-info_-when-select-my-info_-then-return-",
-        "responses" : {
-          "200" : {
-            "description" : "200",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
-                },
-                "examples" : {
-                  "get-my-info/given-user-info_-when-select-my-info_-then-return-my-info" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"내 정보가 성공적으로 조회되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : null,\r\n    \"userId\" : \"userId01\",\r\n    \"nickname\" : \"userNickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INFP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : false\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕하세요\"\r\n  }\r\n}"
-                  }
-                }
-              }
-            }
-          },
-          "401" : {
-            "description" : "401",
-            "content" : {
-              "application/json;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
-                },
-                "examples" : {
-                  "get-my-info/given-user-info_-when-select-my-info_-then-return-unauthorized" : {
-                    "value" : "{\r\n  \"status\" : \"401\",\r\n  \"message\" : \"접근 권한이 없습니다.\",\r\n  \"data\" : null\r\n}"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "User" ],
-        "summary" : "내정보 수정",
-        "description" : "내정보 수정",
-        "operationId" : "update-my-info/given-user-info_-when-update-my-info_-then-return-",
+    "/api/unlike" : {
+      "post" : {
+        "tags" : [ "Like_Unlike" ],
+        "summary" : "유저 싫어요",
+        "description" : "유저 싫어요",
+        "operationId" : "싫어요 - ",
         "requestBody" : {
           "content" : {
-            "application/json;charset=UTF-8" : {
+            "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/api-user486549215"
+                "$ref" : "#/components/schemas/유저 싫어요 요청"
               },
               "examples" : {
-                "update-my-info/given-user-info_-when-update-my-info_-then-return-my-info" : {
-                  "value" : "{\r\n  \"region\" : \"인천\",\r\n  \"mbti\" : \"MBTI\",\r\n  \"interests\" : [ \"놀기\", \"피하기\" ],\r\n  \"selfIntroduction\" : \"하이요\"\r\n}"
+                "싫어요 - 성공" : {
+                  "value" : "{\r\n  \"receiverId\" : \"1\"\r\n}"
                 },
-                "update-my-info/given-user-info_-when-update-my-info_-then-return-unauthorized" : {
-                  "value" : "{\r\n  \"region\" : \"인천\",\r\n  \"mbti\" : \"MBTI\",\r\n  \"interests\" : [ \"놀기\", \"피하기\" ],\r\n  \"selfIntroduction\" : \"하이요\"\r\n}"
+                "싫어요 - 실패" : {
+                  "value" : "{\r\n  \"receiverId\" : \"1\"\r\n}"
                 }
               }
             }
@@ -345,11 +380,39 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
+                  "$ref" : "#/components/schemas/유저 싫어요 응답"
                 },
                 "examples" : {
-                  "update-my-info/given-user-info_-when-update-my-info_-then-return-my-info" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"내 정보가 성공적으로 수정되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : null,\r\n    \"userId\" : \"userId01\",\r\n    \"nickname\" : \"userNickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INFP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : false\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕하세요\"\r\n  }\r\n}"
+                  "싫어요 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"싫어요에 성공했습니다.\",\r\n  \"data\" : true\r\n}"
+                  },
+                  "싫어요 - 실패" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"싫어요에 성공했습니다.\",\r\n  \"data\" : true\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user" : {
+      "get" : {
+        "tags" : [ "User" ],
+        "summary" : "내정보 조회 API",
+        "description" : "내정보 조회 API",
+        "operationId" : "내정보 조회 - ",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/내정보 조회 성공"
+                },
+                "examples" : {
+                  "내정보 조회 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"내 정보가 성공적으로 조회되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : 1,\r\n    \"userId\" : \"userId1\",\r\n    \"nickname\" : \"nickname1\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INTP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"자전거 타기\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"interestName\" : \"놀기\"\r\n    }, {\r\n      \"id\" : 3,\r\n      \"interestName\" : \"게임하기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : true\r\n    }, {\r\n      \"id\" : 2,\r\n      \"status\" : false\r\n    }, {\r\n      \"id\" : 3,\r\n      \"status\" : true\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕\"\r\n  }\r\n}"
                   }
                 }
               }
@@ -360,11 +423,66 @@
             "content" : {
               "application/json;charset=UTF-8" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/signUpResponse"
+                  "$ref" : "#/components/schemas/인증 실패 응답"
                 },
                 "examples" : {
-                  "update-my-info/given-user-info_-when-update-my-info_-then-return-unauthorized" : {
-                    "value" : "{\r\n  \"status\" : \"401\",\r\n  \"message\" : \"접근 권한이 없습니다.\",\r\n  \"data\" : null\r\n}"
+                  "내정보 조회 - 인증실패" : {
+                    "value" : "{\r\n  \"code\" : 0,\r\n  \"status\" : \"ExpiredJwtToken\",\r\n  \"message\" : \"message\",\r\n  \"data\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "User" ],
+        "summary" : "내정보 수정 API",
+        "description" : "내정보 수정 API",
+        "operationId" : "내정보 수정 - ",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/내정보 수정 요청"
+              },
+              "examples" : {
+                "내정보 수정 - 성공" : {
+                  "value" : "{\r\n  \"region\" : \"인천\",\r\n  \"mbti\" : \"ESTP\",\r\n  \"interests\" : [ \"놀기\", \"게임하기\" ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
+                },
+                "내정보 수정 - 인증실패" : {
+                  "value" : "{\r\n  \"region\" : \"인천\",\r\n  \"mbti\" : \"ESTP\",\r\n  \"interests\" : [ \"놀기\", \"게임하기\" ],\r\n  \"selfIntroduction\" : \"안녕하세요\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/내정보 수정 성공"
+                },
+                "examples" : {
+                  "내정보 수정 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"내 정보가 성공적으로 수정되었습니다.\",\r\n  \"data\" : {\r\n    \"id\" : 1,\r\n    \"userId\" : \"userId\",\r\n    \"nickname\" : \"nickname\",\r\n    \"region\" : \"서울\",\r\n    \"mbti\" : \"INTP\",\r\n    \"gender\" : \"M\",\r\n    \"interests\" : [ {\r\n      \"id\" : 1,\r\n      \"interestName\" : \"놀기\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"interestName\" : \"게임하기\"\r\n    } ],\r\n    \"questions\" : [ {\r\n      \"id\" : 1,\r\n      \"status\" : true\r\n    }, {\r\n      \"id\" : 2,\r\n      \"status\" : false\r\n    } ],\r\n    \"selfIntroduction\" : \"안녕\"\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/인증 실패 응답"
+                },
+                "examples" : {
+                  "내정보 수정 - 인증실패" : {
+                    "value" : "{\r\n  \"code\" : 0,\r\n  \"status\" : \"ExpiredJwtToken\",\r\n  \"message\" : \"message\",\r\n  \"data\" : null\r\n}"
                   }
                 }
               }
@@ -376,13 +494,13 @@
     "/api/user-list" : {
       "get" : {
         "tags" : [ "User" ],
-        "summary" : "유저 추천",
-        "description" : "유저 추천",
-        "operationId" : "recommend/given-user-info_-when-select-user-list_-then-return-u",
+        "summary" : "이성 추천받기 API",
+        "description" : "이성 추천받기 API",
+        "operationId" : "이성 추천 받기 - ",
         "parameters" : [ {
           "name" : "page",
           "in" : "query",
-          "description" : "현재 페이지 번호",
+          "description" : "페이지 번호",
           "required" : false,
           "schema" : {
             "type" : "string"
@@ -390,46 +508,129 @@
         }, {
           "name" : "size",
           "in" : "query",
-          "description" : "한 페이지당 아이템 수",
+          "description" : "페이지당 추천 유저 수",
           "required" : false,
           "schema" : {
             "type" : "string"
           }
         }, {
-          "name" : "sort",
-          "in" : "query",
-          "description" : "정렬 방법",
-          "required" : false,
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Basic auth credentials",
+          "required" : true,
           "schema" : {
             "type" : "string"
-          }
+          },
+          "example" : "Bearer accessToken"
         } ],
         "responses" : {
-          "401" : {
-            "description" : "401",
-            "content" : {
-              "application/json;charset=UTF-8" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/UserInfoWithPageInfo"
-                },
-                "examples" : {
-                  "recommend/given-user-info_-when-select-user-list_-then-return-unauthorized" : {
-                    "value" : "{\r\n  \"status\" : \"401\",\r\n  \"message\" : \"접근 권한이 없습니다.\",\r\n  \"data\" : null\r\n}"
-                  }
-                }
-              }
-            }
-          },
           "200" : {
             "description" : "200",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/UserInfoWithPageInfo"
+                  "$ref" : "#/components/schemas/이성 추천받기 성공 응답"
                 },
                 "examples" : {
-                  "recommend/given-user-info_-when-select-user-list_-then-return-user-list" : {
-                    "value" : "{\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"성공적으로 조회되었습니다.\",\r\n  \"data\" : {\r\n    \"pageNumber\" : 0,\r\n    \"totalPages\" : 1,\r\n    \"content\" : [ {\r\n      \"id\" : null,\r\n      \"userId\" : \"userId01\",\r\n      \"nickname\" : \"userNickname\",\r\n      \"region\" : \"서울\",\r\n      \"mbti\" : \"INFP\",\r\n      \"gender\" : \"M\",\r\n      \"interests\" : [ {\r\n        \"id\" : 1,\r\n        \"interestName\" : \"자전거 타기\"\r\n      } ],\r\n      \"questions\" : [ {\r\n        \"id\" : 1,\r\n        \"status\" : false\r\n      } ],\r\n      \"selfIntroduction\" : \"안녕하세요\"\r\n    } ]\r\n  }\r\n}"
+                  "이성 추천 받기 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"추천유저가 성공적으로 조회되었습니다.\",\r\n  \"data\" : {\r\n    \"pageNumber\" : 0,\r\n    \"totalPages\" : 1,\r\n    \"content\" : [ {\r\n      \"id\" : 1,\r\n      \"userId\" : \"userId1\",\r\n      \"nickname\" : \"nickname1\",\r\n      \"region\" : \"서울\",\r\n      \"mbti\" : \"INTP\",\r\n      \"gender\" : \"M\",\r\n      \"interests\" : [ {\r\n        \"id\" : 1,\r\n        \"interestName\" : \"자전거 타기\"\r\n      }, {\r\n        \"id\" : 2,\r\n        \"interestName\" : \"놀기\"\r\n      }, {\r\n        \"id\" : 3,\r\n        \"interestName\" : \"게임하기\"\r\n      } ],\r\n      \"questions\" : [ {\r\n        \"id\" : 1,\r\n        \"status\" : true\r\n      }, {\r\n        \"id\" : 2,\r\n        \"status\" : false\r\n      }, {\r\n        \"id\" : 3,\r\n        \"status\" : true\r\n      } ],\r\n      \"selfIntroduction\" : \"안녕\"\r\n    }, {\r\n      \"id\" : 2,\r\n      \"userId\" : \"userId2\",\r\n      \"nickname\" : \"nickname2\",\r\n      \"region\" : \"서울\",\r\n      \"mbti\" : \"INFP\",\r\n      \"gender\" : \"W\",\r\n      \"interests\" : [ {\r\n        \"id\" : 1,\r\n        \"interestName\" : \"자전거 타기\"\r\n      }, {\r\n        \"id\" : 2,\r\n        \"interestName\" : \"놀기\"\r\n      }, {\r\n        \"id\" : 3,\r\n        \"interestName\" : \"게임하기\"\r\n      } ],\r\n      \"questions\" : [ {\r\n        \"id\" : 1,\r\n        \"status\" : true\r\n      }, {\r\n        \"id\" : 2,\r\n        \"status\" : false\r\n      }, {\r\n        \"id\" : 3,\r\n        \"status\" : true\r\n      } ],\r\n      \"selfIntroduction\" : \"안녕\"\r\n    } ]\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "401",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/인증 실패 응답"
+                },
+                "examples" : {
+                  "이성 추천 받기 - 인증실패" : {
+                    "value" : "{\r\n  \"code\" : 0,\r\n  \"status\" : \"ExpiredJwtToken\",\r\n  \"message\" : \"message\",\r\n  \"data\" : null\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/chatroom/{roomId}" : {
+      "get" : {
+        "tags" : [ "Chatting Room Info" ],
+        "summary" : "채팅 리스트 조회 - 성공",
+        "description" : "채팅 리스트 조회 - 성공",
+        "operationId" : "채팅 리스트 조회 - ",
+        "parameters" : [ {
+          "name" : "roomId",
+          "in" : "path",
+          "description" : "채팅방 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "페이지 번호",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "페이지당 추천 유저 수",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "chatId",
+          "in" : "query",
+          "description" : "채팅 번호",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Basic auth credentials",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "Bearer accessToken"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/채팅 리스트 조회 성공 응답"
+                },
+                "examples" : {
+                  "채팅 리스트 조회 - 성공" : {
+                    "value" : "{\r\n  \"code\" : 200,\r\n  \"status\" : \"OK\",\r\n  \"message\" : \"채팅 메세지가 성공적으로 조회되었습니다.\",\r\n  \"data\" : {\r\n    \"otherUserId\" : 2,\r\n    \"otherUserNickname\" : \"nick02\",\r\n    \"roomStatus\" : true,\r\n    \"chatList\" : [ {\r\n      \"id\" : 1,\r\n      \"writerId\" : 1,\r\n      \"message\" : \"message\",\r\n      \"createdAt\" : null,\r\n      \"updatedAt\" : null,\r\n      \"chatRoomId\" : 1,\r\n      \"status\" : null\r\n    }, {\r\n      \"id\" : 2,\r\n      \"writerId\" : 2,\r\n      \"message\" : \"message2\",\r\n      \"createdAt\" : null,\r\n      \"updatedAt\" : null,\r\n      \"chatRoomId\" : 1,\r\n      \"status\" : null\r\n    } ]\r\n  }\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "400",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/채팅 리스트 조회 실패 응답"
+                },
+                "examples" : {
+                  "채팅 리스트 조회 - 실패" : {
+                    "value" : "{\r\n  \"code\" : 400,\r\n  \"status\" : \"Bad request\",\r\n  \"message\" : \"채팅목록 조회시 예외가 발생했습니다.\",\r\n  \"data\" : null\r\n}"
                   }
                 }
               }
@@ -441,17 +642,68 @@
   },
   "components" : {
     "schemas" : {
-      "CheckUserIdResponse" : {
-        "title" : "CheckUserIdResponse",
+      "채팅 리스트 조회 실패 응답" : {
+        "title" : "채팅 리스트 조회 실패 응답",
         "type" : "object",
         "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "채팅방 리스트 응답" : {
+        "title" : "채팅방 리스트 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
           "data" : {
-            "type" : "boolean",
-            "description" : "데이터"
+            "type" : "array",
+            "description" : "응답 데이터",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "recentMessage" : {
+                  "type" : "string",
+                  "description" : "채팅방 내 최근 채팅"
+                },
+                "otherUserNickname" : {
+                  "type" : "string",
+                  "description" : "채팅방 내 다른 사람의 닉네임"
+                },
+                "unReadCount" : {
+                  "type" : "number",
+                  "description" : "채팅방 내 읽지않은 채팅 개수"
+                },
+                "otherUserId" : {
+                  "type" : "number",
+                  "description" : "채팅방 내 다른 사람의 유니크 아이디"
+                },
+                "roomId" : {
+                  "type" : "number",
+                  "description" : "채팅방 번호"
+                },
+                "updatedAt" : {
+                  "type" : "string",
+                  "description" : "최근 수정 일"
+                }
+              }
+            }
           },
           "message" : {
             "type" : "string",
-            "description" : "응답 메세지"
+            "description" : "응답 메시지"
           },
           "status" : {
             "type" : "string",
@@ -459,90 +711,59 @@
           }
         }
       },
-      "signUpResponse" : {
-        "title" : "signUpResponse",
+      "채팅 리스트 조회 성공 응답" : {
+        "title" : "채팅 리스트 조회 성공 응답",
         "type" : "object",
         "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "응답 메세지"
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
           },
-          "status" : {
-            "type" : "string",
-            "description" : "응답 상태"
-          }
-        }
-      },
-      "api-refresh86057858" : {
-        "type" : "object",
-        "properties" : {
           "data" : {
             "type" : "object",
             "properties" : {
-              "gender" : {
-                "type" : "string",
-                "description" : "성별"
+              "roomStatus" : {
+                "type" : "boolean",
+                "description" : "채팅방 상태"
               },
-              "questions" : {
+              "otherUserNickname" : {
+                "type" : "string",
+                "description" : "상대방 닉네임"
+              },
+              "otherUserId" : {
+                "type" : "number",
+                "description" : "상대방 유니크 아이디"
+              },
+              "chatList" : {
                 "type" : "array",
-                "description" : "질의 응답",
                 "items" : {
                   "type" : "object",
                   "properties" : {
+                    "chatRoomId" : {
+                      "type" : "number",
+                      "description" : "채팅방 아이디"
+                    },
                     "id" : {
                       "type" : "number",
-                      "description" : "응답 아이디"
+                      "description" : "채팅 아이디"
                     },
-                    "status" : {
-                      "type" : "boolean",
-                      "description" : "응답 상태"
-                    }
-                  }
-                }
-              },
-              "nickname" : {
-                "type" : "string",
-                "description" : "유저 닉네임"
-              },
-              "mbti" : {
-                "type" : "string",
-                "description" : "성격유형"
-              },
-              "selfIntroduction" : {
-                "type" : "string",
-                "description" : "자기소개"
-              },
-              "interests" : {
-                "type" : "array",
-                "description" : "관심사",
-                "items" : {
-                  "type" : "object",
-                  "properties" : {
-                    "id" : {
-                      "type" : "number",
-                      "description" : "관심사 아이디"
-                    },
-                    "interestName" : {
+                    "message" : {
                       "type" : "string",
-                      "description" : "관심사 이름"
+                      "description" : "메시지"
+                    },
+                    "writerId" : {
+                      "type" : "number",
+                      "description" : "작성자 유니크 아니디"
                     }
                   }
                 }
-              },
-              "region" : {
-                "type" : "string",
-                "description" : "지역"
-              },
-              "userId" : {
-                "type" : "string",
-                "description" : "유저 아이디"
               }
             },
             "description" : "응답 데이터"
           },
           "message" : {
             "type" : "string",
-            "description" : "응답 메세지"
+            "description" : "응답 메시지"
           },
           "status" : {
             "type" : "string",
@@ -550,45 +771,21 @@
           }
         }
       },
-      "loginResponse" : {
-        "title" : "loginResponse",
+      "유저 싫어요 응답" : {
+        "title" : "유저 싫어요 응답",
         "type" : "object",
         "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "응답 메세지"
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
           },
-          "status" : {
-            "type" : "string",
-            "description" : "응답 상태"
-          }
-        }
-      },
-      "UserInfoWithPageInfo" : {
-        "title" : "UserInfoWithPageInfo",
-        "type" : "object",
-        "properties" : {
-          "message" : {
-            "type" : "string",
-            "description" : "응답 메세지"
-          },
-          "status" : {
-            "type" : "string",
-            "description" : "응답 상태"
-          }
-        }
-      },
-      "CheckNicknameResponse" : {
-        "title" : "CheckNicknameResponse",
-        "type" : "object",
-        "properties" : {
           "data" : {
             "type" : "boolean",
-            "description" : "데이터"
+            "description" : "응답 데이터"
           },
           "message" : {
             "type" : "string",
-            "description" : "응답 메세지"
+            "description" : "응답 메시지"
           },
           "status" : {
             "type" : "string",
@@ -596,18 +793,111 @@
           }
         }
       },
-      "CheckUserIdRequest" : {
-        "title" : "CheckUserIdRequest",
+      "유저 좋아요 요청" : {
+        "title" : "유저 좋아요 요청",
+        "type" : "object",
+        "properties" : {
+          "receiverId" : {
+            "type" : "string",
+            "description" : "상대방 유니크 번호"
+          }
+        }
+      },
+      "회원가입 실패 응답" : {
+        "title" : "회원가입 실패 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "userId" : {
+                "type" : "string",
+                "description" : "아이디 관련 에러"
+              }
+            },
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "닉네임 중복체크 응답" : {
+        "title" : "닉네임 중복체크 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "string",
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "내정보 수정 요청" : {
+        "title" : "내정보 수정 요청",
+        "type" : "object",
+        "properties" : {
+          "mbti" : {
+            "type" : "string",
+            "description" : "MBTI"
+          },
+          "selfIntroduction" : {
+            "type" : "string",
+            "description" : "자기소개"
+          },
+          "interests" : {
+            "type" : "array",
+            "description" : "관심사",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "region" : {
+            "type" : "string",
+            "description" : "사는 지역"
+          }
+        }
+      },
+      "아이디 중복체크 요청" : {
+        "title" : "아이디 중복체크 요청",
         "type" : "object",
         "properties" : {
           "userId" : {
             "type" : "string",
-            "description" : "회원 아이디"
+            "description" : "유저 아이디"
           }
         }
       },
-      "signUpRequest" : {
-        "title" : "signUpRequest",
+      "회원가입 요청" : {
+        "title" : "회원가입 요청",
         "type" : "object",
         "properties" : {
           "userPassword" : {
@@ -620,7 +910,7 @@
           },
           "questions" : {
             "type" : "array",
-            "description" : "질의답변",
+            "description" : "질문에 대한 답변",
             "items" : {
               "oneOf" : [ {
                 "type" : "object"
@@ -639,7 +929,7 @@
           },
           "mbti" : {
             "type" : "string",
-            "description" : "성격유형"
+            "description" : "MBTI"
           },
           "selfIntroduction" : {
             "type" : "string",
@@ -647,7 +937,7 @@
           },
           "interests" : {
             "type" : "array",
-            "description" : "관심사배열",
+            "description" : "관심사",
             "items" : {
               "oneOf" : [ {
                 "type" : "object"
@@ -665,19 +955,107 @@
             "description" : "사는 지역"
           },
           "userId" : {
-            "description" : "회원 아이디",
-            "oneOf" : [ {
-              "type" : "string"
-            }, null ]
+            "type" : "string",
+            "description" : "유저 아이디"
           }
         }
       },
-      "api-refresh996116999" : {
+      "이성 추천받기 성공 응답" : {
+        "title" : "이성 추천받기 성공 응답",
         "type" : "object",
         "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "pageNumber" : {
+                "type" : "number",
+                "description" : "페이지 번호"
+              },
+              "totalPages" : {
+                "type" : "number",
+                "description" : "전체 페이지 개수"
+              },
+              "content" : {
+                "type" : "array",
+                "description" : "페이지 내 추천 유저 정보",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "gender" : {
+                      "type" : "string",
+                      "description" : "성별"
+                    },
+                    "questions" : {
+                      "type" : "array",
+                      "description" : "질의 답변 리스트",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "number",
+                            "description" : "질의 답변 아이디"
+                          },
+                          "status" : {
+                            "type" : "boolean",
+                            "description" : "질의 답변 상태"
+                          }
+                        }
+                      }
+                    },
+                    "nickname" : {
+                      "type" : "string",
+                      "description" : "닉네임"
+                    },
+                    "mbti" : {
+                      "type" : "string",
+                      "description" : "MBTI"
+                    },
+                    "selfIntroduction" : {
+                      "type" : "string",
+                      "description" : "자기소개"
+                    },
+                    "id" : {
+                      "type" : "number",
+                      "description" : "유저 유니크 번호"
+                    },
+                    "interests" : {
+                      "type" : "array",
+                      "description" : "관심사 리스트",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "number",
+                            "description" : "관심사 아이디"
+                          },
+                          "interestName" : {
+                            "type" : "string",
+                            "description" : "관심사 명"
+                          }
+                        }
+                      }
+                    },
+                    "region" : {
+                      "type" : "string",
+                      "description" : "사는 지역"
+                    },
+                    "userId" : {
+                      "type" : "string",
+                      "description" : "유저 아이디"
+                    }
+                  }
+                }
+              }
+            },
+            "description" : "응답 데이터"
+          },
           "message" : {
             "type" : "string",
-            "description" : "응답 메세지"
+            "description" : "응답 메시지"
           },
           "status" : {
             "type" : "string",
@@ -685,18 +1063,8 @@
           }
         }
       },
-      "CheckNicknameRequest" : {
-        "title" : "CheckNicknameRequest",
-        "type" : "object",
-        "properties" : {
-          "nickname" : {
-            "type" : "string",
-            "description" : "닉네임"
-          }
-        }
-      },
-      "loginRequest" : {
-        "title" : "loginRequest",
+      "로그인 요청" : {
+        "title" : "로그인 요청",
         "type" : "object",
         "properties" : {
           "userPassword" : {
@@ -705,12 +1073,511 @@
           },
           "userId" : {
             "type" : "string",
-            "description" : "회원 아이디"
+            "description" : "유저 아이디"
           }
         }
       },
-      "api-user486549215" : {
-        "type" : "object"
+      "내정보 수정 성공" : {
+        "title" : "내정보 수정 성공",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "gender" : {
+                "type" : "string",
+                "description" : "성별"
+              },
+              "questions" : {
+                "type" : "array",
+                "description" : "질의 답변 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "질의 답변 아이디"
+                    },
+                    "status" : {
+                      "type" : "boolean",
+                      "description" : "질의 답변 상태"
+                    }
+                  }
+                }
+              },
+              "nickname" : {
+                "type" : "string",
+                "description" : "닉네임"
+              },
+              "mbti" : {
+                "type" : "string",
+                "description" : "MBTI"
+              },
+              "selfIntroduction" : {
+                "type" : "string",
+                "description" : "자기소개"
+              },
+              "id" : {
+                "type" : "number",
+                "description" : "유저 유니크 번호"
+              },
+              "interests" : {
+                "type" : "array",
+                "description" : "관심사 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "관심사 아이디"
+                    },
+                    "interestName" : {
+                      "type" : "string",
+                      "description" : "관심사 명"
+                    }
+                  }
+                }
+              },
+              "region" : {
+                "type" : "string",
+                "description" : "사는 지역"
+              },
+              "userId" : {
+                "type" : "string",
+                "description" : "유저 아이디"
+              }
+            },
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "인증 실패 응답" : {
+        "title" : "인증 실패 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "유저 싫어요 요청" : {
+        "title" : "유저 싫어요 요청",
+        "type" : "object",
+        "properties" : {
+          "receiverId" : {
+            "type" : "string",
+            "description" : "상대방 유니크 번호"
+          }
+        }
+      },
+      "유저 좋아요 응답" : {
+        "title" : "유저 좋아요 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "boolean",
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "로그인 성공 응답" : {
+        "title" : "로그인 성공 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "gender" : {
+                "type" : "string",
+                "description" : "성별"
+              },
+              "questions" : {
+                "type" : "array",
+                "description" : "질의 답변 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "질의 답변 아이디"
+                    },
+                    "status" : {
+                      "type" : "boolean",
+                      "description" : "질의 답변 상태"
+                    }
+                  }
+                }
+              },
+              "nickname" : {
+                "type" : "string",
+                "description" : "닉네임"
+              },
+              "mbti" : {
+                "type" : "string",
+                "description" : "MBTI"
+              },
+              "selfIntroduction" : {
+                "type" : "string",
+                "description" : "자기소개"
+              },
+              "accessToken" : {
+                "type" : "string",
+                "description" : "AccessToken"
+              },
+              "interests" : {
+                "type" : "array",
+                "description" : "관심사 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "관심사 아이디"
+                    },
+                    "interestName" : {
+                      "type" : "string",
+                      "description" : "관심사 명"
+                    }
+                  }
+                }
+              },
+              "region" : {
+                "type" : "string",
+                "description" : "사는 지역"
+              },
+              "userId" : {
+                "type" : "string",
+                "description" : "유저 아이디"
+              }
+            },
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "닉네임 중복체크 요청" : {
+        "title" : "닉네임 중복체크 요청",
+        "type" : "object",
+        "properties" : {
+          "nickname" : {
+            "type" : "string",
+            "description" : "닉네임"
+          }
+        }
+      },
+      "회원가입 성공 응답" : {
+        "title" : "회원가입 성공 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "토큰 재발급 성공" : {
+        "title" : "토큰 재발급 성공",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "gender" : {
+                "type" : "string",
+                "description" : "성별"
+              },
+              "questions" : {
+                "type" : "array",
+                "description" : "질의 답변 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "질의 답변 아이디"
+                    },
+                    "status" : {
+                      "type" : "boolean",
+                      "description" : "질의 답변 상태"
+                    }
+                  }
+                }
+              },
+              "nickname" : {
+                "type" : "string",
+                "description" : "닉네임"
+              },
+              "mbti" : {
+                "type" : "string",
+                "description" : "MBTI"
+              },
+              "selfIntroduction" : {
+                "type" : "string",
+                "description" : "자기소개"
+              },
+              "id" : {
+                "type" : "number",
+                "description" : "유저 유니크 번호"
+              },
+              "accessToken" : {
+                "type" : "string",
+                "description" : "AccessToken"
+              },
+              "interests" : {
+                "type" : "array",
+                "description" : "관심사 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "관심사 아이디"
+                    },
+                    "interestName" : {
+                      "type" : "string",
+                      "description" : "관심사 명"
+                    }
+                  }
+                }
+              },
+              "region" : {
+                "type" : "string",
+                "description" : "사는 지역"
+              },
+              "userId" : {
+                "type" : "string",
+                "description" : "유저 아이디"
+              }
+            },
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "토큰 재발급 실패" : {
+        "title" : "토큰 재발급 실패",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "내정보 조회 성공" : {
+        "title" : "내정보 조회 성공",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "object",
+            "properties" : {
+              "gender" : {
+                "type" : "string",
+                "description" : "성별"
+              },
+              "questions" : {
+                "type" : "array",
+                "description" : "질의 답변 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "질의 답변 아이디"
+                    },
+                    "status" : {
+                      "type" : "boolean",
+                      "description" : "질의 답변 상태"
+                    }
+                  }
+                }
+              },
+              "nickname" : {
+                "type" : "string",
+                "description" : "닉네임"
+              },
+              "mbti" : {
+                "type" : "string",
+                "description" : "MBTI"
+              },
+              "selfIntroduction" : {
+                "type" : "string",
+                "description" : "자기소개"
+              },
+              "id" : {
+                "type" : "number",
+                "description" : "유저 유니크 번호"
+              },
+              "interests" : {
+                "type" : "array",
+                "description" : "관심사 리스트",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "number",
+                      "description" : "관심사 아이디"
+                    },
+                    "interestName" : {
+                      "type" : "string",
+                      "description" : "관심사 명"
+                    }
+                  }
+                }
+              },
+              "region" : {
+                "type" : "string",
+                "description" : "사는 지역"
+              },
+              "userId" : {
+                "type" : "string",
+                "description" : "유저 아이디"
+              }
+            },
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "로그인 실패 응답" : {
+        "title" : "로그인 실패 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "중복아이디 체크 응답" : {
+        "title" : "중복아이디 체크 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "data" : {
+            "type" : "string",
+            "description" : "응답 데이터"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
+      },
+      "로그아웃 응답" : {
+        "title" : "로그아웃 응답",
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "number",
+            "description" : "응답 코드"
+          },
+          "message" : {
+            "type" : "string",
+            "description" : "응답 메시지"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "응답 상태"
+          }
+        }
       }
     }
   }

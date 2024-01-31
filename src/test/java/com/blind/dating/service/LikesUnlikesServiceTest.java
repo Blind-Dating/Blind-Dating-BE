@@ -86,7 +86,7 @@ class LikesUnlikesServiceTest {
         assertThat(flag).isTrue();
     }
 
-    @DisplayName("좋아요 예외 발생 - 테스트")
+    @DisplayName("좋아요 예외 발생1 - 테스트")
     @Test
     void givenUserIdAndReceiverId_whenLikeUser_thenThrowException() {
         // Given
@@ -101,6 +101,23 @@ class LikesUnlikesServiceTest {
         // Then
         assertThat(exception.getMessage()).isEqualTo("존재하지 않는 계정입니다.");
         verify(likesUnlikesRepository, never()).save(any(LikesUnlikes.class));
+    }
+
+    @DisplayName("좋아요 예외발생2 - 테스트")
+    @Test
+    void givenUserIdAndReceiverId_whenLikeUser_thenThrowException2(){
+        //Given
+        given(userAccountRepository.findById(Long.parseLong(receiverId))).willReturn(Optional.of(receiverAccount));
+        given(likesUnlikesRepository.save(any(LikesUnlikes.class))).willReturn(new LikesUnlikes());
+        given(userAccountRepository.findById(Long.parseLong(userId))).willReturn(Optional.empty());
+
+        // When
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            likesUnlikesService.likeUser(authentication, "2");
+        });
+
+        // Then
+        assertThat(exception.getMessage()).isEqualTo("존재하지 않는 계정입니다.");
     }
 
     @DisplayName("싫어요 - 테스트")
