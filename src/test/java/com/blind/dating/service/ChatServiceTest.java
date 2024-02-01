@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,9 +104,9 @@ class ChatServiceTest {
     @Test
     void givenUserIdAndRoomId_whenUpdateUnReadChatReadChatChatIdNot0_thenReturnSize2(){
         //Given
-
+        Set<Chat> chats = Set.of(new Chat(1L, new ChatRoom(), 1L, "message"));
         List<Chat> list = List.of(new Chat(2L, null, 1L, null), new Chat(), new Chat(), new Chat());
-        ChatRoom chatRoom = new ChatRoom(1L, null, null,false, "message");
+        ChatRoom chatRoom = new ChatRoom(1L, null, null,false, "message",chats);
         ReadChat readChat = ReadChat.of(chatRoom,1L,1L);
         Optional<ReadChat> optional = Optional.of(readChat);
 
@@ -125,9 +126,9 @@ class ChatServiceTest {
     @Test
     void givenUserIdAndRoomId_whenUpdateUnReadChat_thenThrowException(){
         //Given
-
+        Set<Chat> chats = Set.of(new Chat(1L, new ChatRoom(), 1L, "message"));
         List<Chat> list = List.of(new Chat(2L, null, 1L, null), new Chat(), new Chat(), new Chat());
-        ChatRoom chatRoom = new ChatRoom(1L, null, null,false, "message");
+        ChatRoom chatRoom = new ChatRoom(1L, null, null,false, "message", chats);
         ReadChat readChat = ReadChat.of(chatRoom,1L,1L);
         Optional<ReadChat> optional = Optional.of(readChat);
 

@@ -8,8 +8,5 @@ import java.util.List;
 
 public interface InterestRepository extends JpaRepository<Interest, Long> {
 
-    List<Interest> findAllByUserAccount(UserAccount user);
-
-
     void deleteAllByUserAccount(UserAccount user);
 }

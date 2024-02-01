@@ -57,10 +57,12 @@ class ChattingRoomControllerTest extends ControllerTestConfig{
 
     private List<ChatRoomDto> rooms;
     private Authentication authentication;
+    private Set<Chat> chats;
     @BeforeEach
     void setting() {
         authentication = new UsernamePasswordAuthenticationToken("1",null);
         rooms = List.of(new ChatRoomDto(1L, LocalDateTime.now(), 2L, "nick02","안녕 이게 최근 메시지야",10L));
+        chats = Set.of(new Chat(1L, new ChatRoom(), 1L, "message"));
     }
 
     @Nested
@@ -115,7 +117,7 @@ class ChattingRoomControllerTest extends ControllerTestConfig{
         @WithMockUser(username = "1")
         void givenRoomIdAndChatId_whenEnterRoom_thenThrowException() throws Exception{
             Authentication authentication = new UsernamePasswordAuthenticationToken("1",null);
-            given(chattingRoomService.getRoom(anyString())).willThrow(new RuntimeException("채팅목록 조회시 예외가 발생했습니다."));
+            given(chattingRoomService.getRoom(anyString())).willReturn(Optional.empty());
 
             ResultActions actions = mvc.perform(
                     RestDocumentationRequestBuilders.get("/api/chatroom/{roomId}","1")
@@ -158,7 +160,7 @@ class ChattingRoomControllerTest extends ControllerTestConfig{
         void givenRoomIdAndChatId_whenEnterRoom_thenReturnChatList() throws Exception {
             UserAccount user1 = new UserAccount(1L, "user01", "pass01", "nick01","서울","intp","M", false, "안녕", LocalDateTime.now(), null, "kakao",null,null,null,null);
             UserAccount user2 = new UserAccount(2L, "user02", "pass02", "nick02","서울","intp","W", false, "안녕", LocalDateTime.now(), null, "kakao",null,null,null,null);
-            ChatRoom chatRoom = new ChatRoom(1L, Set.of(user1, user2), null, true, "message");
+            ChatRoom chatRoom = new ChatRoom(1L, Set.of(user1, user2), null, true, "message",chats);
             List<Chat> list = List.of(new Chat(1L, chatRoom, 1L, "message"), new Chat(2L, chatRoom, 2L, "message2"));
 
             given(chattingRoomService.getRoom(anyString())).willReturn(Optional.of(chatRoom));

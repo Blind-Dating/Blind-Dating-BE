@@ -38,9 +38,9 @@ public class ChatRoom extends BaseEntity{
     @Setter
     private String recentMessage;
 
-    @ToString.Exclude
+    @ToString.Exclude @Setter
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    private final Set<Chat> chats = new LinkedHashSet<>();
+    private Set<Chat> chats = new LinkedHashSet<>();
 
 
     @Override
