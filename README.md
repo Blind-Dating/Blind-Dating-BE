@@ -63,30 +63,26 @@ API 문서는 Swagger를 통해 작성되었습니다.
 4. 좋아요 기능
 5. 실시간 채팅
 
-## 💡 주요 페이지
+## :rocket: 개발 이슈
+### 1. Jacoco 도입후 코드 커버리지 100%  
+기존 controller와 service에 대한 테스트 코드를 성공 케이스에 대해서만 작성을 했었습니다. 좀더 좋은 가독성과 성능을 위해 리팩토링 후에 배포를 진행했는데 예상치 못한 곳에서
+여러번 원하는 대로 기능이 동작하지 않았었고, 이를 통해 테스트 코드와 테스트의 자동화의 중요성을 인식하였습니다. 이런 경험을 통해 안정적인 시스템을 구축하고자 테스트코드가
+프로턱션 코드를 검증 할 수 있도록 Jacoco를 도입한 후 Controller, Service에 대해 100%의 커버리지를 달성했습니다. 
+            
+![image](https://github.com/Blind-Dating/Blind-Dating-BE/assets/59335316/726fe6c8-824b-4d5b-accb-590ac85f3680)
 
-### :mag: 회원 추천 받기
-![image](https://github.com/Blind-Dating/Blind-Dating-BE/assets/59335316/4d68260a-5aac-4de9-8842-ab47d7b7d822)    
-- 해당 페이지에서 이성을 추천받을 수 있고, 좋아요 또는 싫어요를 할 수 있습니다.
-- 상대방과 내가 좋아요를 누를 시 채팅방이 생성됩니다.    
+### 2. 다중 패치 조인시 오류 발생
+추천유저 조회시 유저정보와 함께 해당 유저의 관심사와 질의답변을 조회했어야 했고, 이는 N+1의 문제를 야기했습니다. 해당문제를 해결하기 위해 하나의 쿼리로 유저정보, 관심사, 질의답변 내용을
+조회하고자 JPQL을 작성했었고, 테스트시 MultipleBagFetchException이 발생했습니다. 해당 예외는 List 타입의 2개 이상의 엔티티를 패치조인 할때 발생하는 예외이고 이 문제를 해결하기 위해 
+BatchSize를 적용했습니다. 기본적으로 추천 유저는 페이지네이션 처리를 하였고, 한 페이지당 10명을 조회하기에 BatchSize는 10으로 정해서 MultipleBagFetchException과 N+1 문제를 해결했습니다.
 
-### :mag: 채팅방 리스트
-![image](https://github.com/Blind-Dating/Blind-Dating-BE/assets/59335316/dbbb15db-1ee5-45db-8e43-851dfb833501)    
-- 내가 참여한 채팅방 리스트를 확인할 수 있습니다.
-- 웹 소켓을 연결해 상대방이 문자를 보내면 실시간으로 메세지를 미리 볼 수 있습니다.
-- 읽지 않은 메세지 개수를 실시간으로 업데이트해줍니다.
-
-### :mag: 채팅방
-![image](https://github.com/Blind-Dating/Blind-Dating-BE/assets/59335316/d5b78490-1169-4b50-a1a6-0ef9fbfe9f42)
-- 웹 소켓을 연결해 상대방과 실시간 채팅을 진행할 수 있습니다.  
-
-
-## :rocket: 트러블 슈팅
-1. ElastiCache에서 요금 발생     
+### 3. ElastiCache에서 요금 발생  
 AWS에서 발생한 만원 이상의 요금을 조사하기 위해 요금 명세서를 확인해 보았습니다. 결과적으로 Redis를 위한 ElastiCache에서 요금이 발생한 것을 확인할 수 있었습니다. 
 해당 서비스의 구성을 확인해 본 결과 노드의 수가 3개로 설정되어있었고, 이 3개의 노드가 24시간 동안 작동하여 기본 제공량인 750시간을 초과하면서 요금이 발생한 것을 파악했습니다.
 이에 따른 과금 문제를 해결하기 위해 노드의 수를 3개에서 1개로 줄여서 문제를 해결하였습니다.
-2. Post/Patch 테스트 코드 동작시 403 Forbidden 발생    
+
+
+### 4. Post/Patch 테스트 코드 동작시 403 Forbidden 발생    
 Get 테스트 코드는 잘 실행되는데 Post, Patch, Delete 테스트 코드 실행 시 csrfToken이 요청 시 주어지지 않아 403 Forbidden이 발생하는 것을 확인하였습니다.
 이에 대해 조사한 결과, @WebMvcTest는 보안 구성을 자동으로 로드하지 않는 것을 확인하였습니다. 이를 해결하기 위해 SecurityConfig 클래스를 `@Import(SecurityConfig.class)`를 추가해
 로드해주고, `csrf().disable()` 설정을 통해 csrfToken을 사용하지 않도록 함으로써 해당 문제를 해결할 수 있었습니다.
